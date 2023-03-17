@@ -1,0 +1,1 @@
+.DicomPDFViewport{--header-height: 50px;overflow:scroll}.PDFContentDocument{display:flex;flex-direction:column}.PDFContentPage{padding-bottom:10px}.PDFZoomButton{position:absolute;font-size:30px;text-shadow:0px 0px 1px white;top:5px;right:15px;color:#aaa;z-index:10}
