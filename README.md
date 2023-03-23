@@ -4,10 +4,19 @@ A viewer server is a radiological viewer developed for clinical professionals.
 
 Run
 -----------
-clone the project and run with command
+Clone the project and run with command
 ```shell
 poetry install
-poetry run python src/main.py
+```
+Find the location in which python packages are being install, i.e,  ~/.cache/pypoetry/virtualenvs/fastapi-viewer-CygDWbJp-py3.10
+
+Source environment
+```shell
+source ~/.cache/pypoetry/virtualenvs/fastapi-viewer-CygDWbJp-py3.10/bin/activate
+```
+Run app
+```shell
+cd ./src && uvicorn main:app --workers 4 
 ```
 Development
 -----------
