@@ -5,8 +5,12 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from module.coupons import router as coupon_router
+from module.sessions import router as session_router
 from module.wado import router as wado_router
 from config.settings import settings
+
+from config.session import engine
+from db.model.base_model import Base
 
 import asyncio
 
@@ -24,6 +28,7 @@ def get_application() -> FastAPI:
         openapi_url=None,
     )
     application.include_router(coupon_router, prefix=settings.API_V1_STR)
+    application.include_router(session_router, prefix=settings.API_V1_STR)
     application.include_router(wado_router)
     application.mount("/viewer", StaticFiles(directory="/home/phtran/workingspace/python_project/testing/fastapi_viewer/viewer"), name="viewer")
     return application
@@ -42,8 +47,14 @@ app = get_application()
 @app.on_event("startup")
 async def schedule_periodic():
     print("APP Starting up....")
-    loop = asyncio.get_event_loop()
-    loop.create_task(periodic())
+    # Auto-create Database Schema
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+    # Run loop event periodically
+    # loop = asyncio.get_event_loop()
+    # loop.create_task(periodic())
+
 
 @app.get("/")
 def main():

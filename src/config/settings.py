@@ -24,12 +24,16 @@ class GlobalConfig(BaseSettings):
 
     DATABASE_URL: Optional[
         PostgresDsn
-    ] = "postgresql://postgres:dbroothp2022@192.168.1.32:6632/gino"
+    ] = "postgresql://postgres:dbroothp2022@192.168.1.32:6632/fastapi"
 
     DB_ECHO_LOG: bool = False
 
     @property
     def async_database_url(self) -> Optional[str]:
+        if self.ENVIRONMENT == EnvironmentEnum.LOCAL:
+            # return "sqlite+aiosqlite:///:memory:"
+            return "sqlite+aiosqlite:///./sql_app.db"
+
         return (
             self.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
             if self.DATABASE_URL
@@ -66,10 +70,9 @@ class FactoryConfig:
         self.environment = environment
 
     def __call__(self) -> GlobalConfig:
-        if self.environment == EnvironmentEnum.LOCAL.value:
-            return LocalConfig()
-        return ProdConfig()
-
+        if self.environment == EnvironmentEnum.PRODUCTION.value:
+            return ProdConfig()
+        return LocalConfig()
 
 @lru_cache()
 def get_configuration() -> GlobalConfig:

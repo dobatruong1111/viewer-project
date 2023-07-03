@@ -26,7 +26,8 @@ class BaseRepository(Generic[IN_SCHEMA, SCHEMA, TABLE], metaclass=abc.ABCMeta):
         ...
 
     async def create(self, in_schema: IN_SCHEMA) -> SCHEMA:
-        entry = self._table(id=uuid4(), **in_schema.dict())
+        entry = self._table(id=str(uuid4()), **in_schema.dict())
+
         self._db_session.add(entry)
         await self._db_session.commit()
         return self._schema.from_orm(entry)
