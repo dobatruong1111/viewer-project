@@ -26,7 +26,9 @@ class BaseRepository(Generic[IN_SCHEMA, SCHEMA, TABLE], metaclass=abc.ABCMeta):
         ...
 
     async def create(self, in_schema: IN_SCHEMA) -> SCHEMA:
-        entry = self._table(id=str(uuid4()), **in_schema.dict())
+        entry = self._table(**in_schema.dict())
+        if 'id' not in in_schema.dict():
+            entry = self._table(id=str(uuid4()), **in_schema.dict())
 
         self._db_session.add(entry)
         await self._db_session.commit()

@@ -1,12 +1,14 @@
 from typing import Optional, Any, Dict
 from uuid import UUID
 
-from pydantic import validator
+from datetime import datetime
 
 from db.schema import BaseSchema
 
 class SessionSchemaBase(BaseSchema):
+
     user_id : str
+    
     session : str
 
     owner_session : str
@@ -19,13 +21,13 @@ class SessionSchemaBase(BaseSchema):
     
     study_iuid : str
     
-    expired_time : str
+    expired_time : datetime
 
 class InSessionSchema(SessionSchemaBase):
-    ...
+    id: str
 
 class SessionSchema(SessionSchemaBase):
-    id: UUID
+    id: str
 
 class OutSessionSchema(SessionSchema):
     ...

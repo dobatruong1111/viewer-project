@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, DateTime, String
 
 from db.model.base_model import BaseModel
 
 class Session(BaseModel):
+
     __tablename__ = "viewer_session"
 
     user_id = Column(String)
@@ -19,4 +20,4 @@ class Session(BaseModel):
     
     study_iuid = Column(String)
     
-    expired_time = Column(String)
+    expired_time = Column(DateTime)

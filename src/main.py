@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from module.coupons import router as coupon_router
-from module.sessions import router as session_router
+from module.client import router as client_router
 from module.wado import router as wado_router
 from config.settings import settings
 
@@ -23,12 +23,12 @@ def get_application() -> FastAPI:
         title=settings.TITLE,
         description=settings.DESCRIPTION,
         debug=settings.DEBUG,
-        docs_url=None,
-        redoc_url=None,
-        openapi_url=None,
+        # docs_url=None,
+        # redoc_url=None,
+        # openapi_url=None,
     )
     application.include_router(coupon_router, prefix=settings.API_V1_STR)
-    application.include_router(session_router, prefix=settings.API_V1_STR)
+    application.include_router(client_router, prefix=settings.API_V1_STR)
     application.include_router(wado_router)
     application.mount("/viewer", StaticFiles(directory="/home/phtran/workingspace/python_project/testing/fastapi_viewer/viewer"), name="viewer")
     return application
