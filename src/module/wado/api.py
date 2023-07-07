@@ -12,7 +12,6 @@ router = APIRouter(prefix="/ws/rest/wado-rs", tags=['wado-rs'])
 
 @router.get("/{sessionID}/studies/{studyUID}/series")
 async def get_study(sessionID: str, studyUID: str, db: AsyncSession = Depends(get_db)) -> Response:
-    print("PHONG AAAA")
     resp = await WadoService(db).get_study(sessionID, studyUID)
     return JSONResponse(resp.json())
 
